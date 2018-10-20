@@ -8,6 +8,16 @@
 
 ![](../.gitbook/assets/image%20%288%29.png)
 
+* Stub constructs RPC request argument and records it for future response
+* RPC library: 
+  * read each request/response
+  * create a new thread for this request/response
+  * call the named method\(dispatch\)
+  * marshallls  reply according to RPC rules
+  * writes reply on TCP connection
+* Dispatch: dispatching each RPC request to corresponding handler which matches with the argument of RPC request
+* Handler: function that read RPC argument, execute specific jobs, modify reply.
+
 ![](../.gitbook/assets/image%20%282%29.png)
 
 ## Review
@@ -37,11 +47,41 @@ Coordination between threads
 * Use channel regrading to communication between separate thread  
 * Use channel regrading to wait for events`
 
-**RPC problem: what to do about failures?**
+**What does failures look like to the client RPC library?**  
+`e.g. lost packet, broken network, slow server, crashed server  
+Client never see aby response after some time  
+* Server may never receive the request  
+* Server may has executed, but fail to reply before a crash  
+* Server may has exectued and replyed, but network broke before`
 
-**What does a failure look like to the client RPC library?**
+**RPC problem: what to do about these failures?**  
+`Two models handling failure:  
+> At least once - repeat sending request until succcess  
+    * Problem: latent wirte request has undeterministic influence for the responses of other requests  
+    * Only works for read-only operations or has a model of dealing with duplicate.  
+  
+> At most once(Better) - server check duplicate for each requestd`
 
-**What if an at-most-once server crashes and re-starts?**
+**How does at-most-once server handle duplicate requests?**  
+`Introduce unique [xid] = clientID + RPC sequence number  
+if seen[xid]   
+    return old[xid]  
+else   
+    r = handler()  
+    old[xid] = r  
+    seen[xid] = true  
+* Problem: when or how to discard old RPC info?`
+
+**When is discard safe?**  
+`Idea: server need to find a way to recognize client has received the last response  
+* Client tell server directly: include see all replies <= X with RPC each request. Then server discard old[:x]  
+* Only allow client one outstanding RPC at a time: the arrival of seq+1 allows server to discard all <= seq`
+
+How to handle duplicate requests while original is still executing?  
+`Using pending flag per executing RPC, pending for sequential duplicate requests`
+
+**What if an at-most-once server crashes and re-starts?**  
+`Write  old info to disk or use replicate machine to store state`
 
 ## Reference
 
