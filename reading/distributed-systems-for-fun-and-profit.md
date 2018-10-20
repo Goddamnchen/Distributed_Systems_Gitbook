@@ -28,7 +28,7 @@ Problems scale and cost-prohibitive, single node can no longer satisfy.
 
 **Partition** and **Replicate** -- Divide and Conquer:
 
-![Illustration 1: independently partition and replicate](../.gitbook/assets/image%20%285%29.png)
+![Illustration 1: independently partition and replicate](../.gitbook/assets/image%20%286%29.png)
 
  **Partition:** technique to reduce the impact of dataset growth.
 
@@ -87,7 +87,7 @@ However, considering absolute abstraction is impossible. There should be a tensi
 * Availability: Node failures do not affect system working
 * Partition tolerance: System continues to operate despite message loss due to network/node failure
 
-![Illustration 2: Intersection of 2 of CAP theorem ](../.gitbook/assets/image%20%286%29.png)
+![Illustration 2: Intersection of 2 of CAP theorem ](../.gitbook/assets/image%20%288%29.png)
 
 Only two can be achievable and the middle piece is not realistic. Now we have:
 

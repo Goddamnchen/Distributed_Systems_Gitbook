@@ -1,12 +1,12 @@
 # Lecture 2 - RPC and Threads
 
-![](../.gitbook/assets/image%20%287%29.png)
-
 ![](../.gitbook/assets/image%20%289%29.png)
 
+![](../.gitbook/assets/image%20%2812%29.png)
 
 
-![](../.gitbook/assets/image%20%288%29.png)
+
+![](../.gitbook/assets/image%20%2810%29.png)
 
 * Stub constructs RPC request argument and records it for future response
 * RPC library: 
@@ -15,10 +15,10 @@
   * call the named method\(dispatch\)
   * marshallls  reply according to RPC rules
   * writes reply on TCP connection
-* Dispatch: dispatching each RPC request to corresponding handler which matches with the argument of RPC request
+* Dispatch: mapping each RPC request to corresponding handler which matches with the argument of RPC request
 * Handler: function that read RPC argument, execute specific jobs, modify reply.
 
-![](../.gitbook/assets/image%20%282%29.png)
+![](../.gitbook/assets/image%20%283%29.png)
 
 ## Review
 
@@ -28,7 +28,7 @@
 * Thread share memory`  
 ****&gt; ****[what is a "thread"\(really\)? - stackOverFlow](https://stackoverflow.com/questions/5201852/what-is-a-thread-really)
 
-![A process\(execution context\) with two threads of execution, running on one processor](../.gitbook/assets/image%20%284%29.png)
+![A process\(execution context\) with two threads of execution, running on one processor](../.gitbook/assets/image%20%285%29.png)
 
 **Why threads?**  
 `Threads express concurrency  

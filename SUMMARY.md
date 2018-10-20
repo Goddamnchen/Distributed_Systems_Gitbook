@@ -6,6 +6,7 @@
 
 * [Lecture 1 - MapReduce](lectures/untitled.md)
 * [Lecture 2 - RPC and Threads](lectures/lecture-2-rpc-and-threads.md)
+* [Lecture 3 - GFS](lectures/lecture-3-gfs.md)
 
 ## READING
 
