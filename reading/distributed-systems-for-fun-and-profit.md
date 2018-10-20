@@ -81,24 +81,20 @@ However, considering absolute abstraction is impossible. There should be a tensi
 
 **The FLP impossibility result**:
 
-**The CAP theorem**:
+### **The CAP theorem**:
 
 * Consistency\(Strong\): All nodes see same data
 * Availability: Node failures do not affect system working
 * Partition tolerance: System continues to operate despite message loss due to network/node failure
 
-![](../.gitbook/assets/image%20%281%29.png)
+![Illustration 2: Intersection of 2 of CAP theorem ](../.gitbook/assets/image%20%281%29.png)
 
 Only two can be achievable and the middle piece is not realistic. Now we have:
 
-* CA: Can tolerate any node failures and hence must stop accepting writes everywhere to avoid introducing divergence \(i.e. two phase commit\)
-* CP: Keeping eyes on majority consistency to tolerance node/network failure. \(i.e. Paxos, Raft\) 
+* CA: Can tolerate any node failures and hence must stop accepting writes everywhere to avoid introducing divergence \(i.e. _Two phase commit_\)
+* CP: Keeping eyes on majority consistency to tolerance node/network failure. \(i.e. _Paxos_, _Raft_\) 
   * > Strong consistency guarantees require us to give up availability during a partition. This is because one cannot prevent divergence between two replicas that cannot communicate with each other while continuing to accept writes on both sides of the partition.
-* AP: Dynamo
-
-![Illustration 3: Partition binary choice](../.gitbook/assets/image%20%283%29.png)
-
-Par
+* AP: _Dynamo_
 
 **Four conclusion draw from CAP theorem:**
 
@@ -108,4 +104,48 @@ Par
 3. there is a tension between strong consistency and performance in normal operation
    * > Strong consistency / single-copy consistency requires that nodes communicate and agree on every operation. This results in high latency during normal operation.
 4. if we do not want to give up availability during a network partition, then we need to explore whether consistency models other than strong consistency are workable for our purposes. 
+
+
+
+![Illustration 3: Partition binary choice](../.gitbook/assets/image%20%283%29.png)
+
+Consistency and availability are not really binary choices, unless limiting to strong consistency. We can reconciling them to some extent to have both of them.
+
+### **Consistency model**
+
+A contract between programmer and system, wherein the system guarantees that if the programmer follows some specific rules, the results of operations on the data store will be predictable
+
+**Strong consistency vs. other consistency models:**
+
+* Strong consistency models\(capable of maintaining a single copy\)
+
+{% tabs %}
+{% tab title="Linearizable consistency" %}
+Under linearizable consistency, all operations appear to have executed atomically in an order that is consistent with the **global real-time** ordering of operations
+{% endtab %}
+
+{% tab title="Sequential consistency" %}
+Under sequential consistency, all operations appear to have executed atomically in some order ~~with global real-time~~ that is consistent with the order seen at individual nodes and that is equal at all nodes.
+{% endtab %}
+{% endtabs %}
+
+* Weak consistency\(not strong\)
+
+{% tabs %}
+{% tab title="Client centric consistency models" %}
+The consistency models involving the notion of a client or session in some way.
+
+> For example, a client-centric consistency model might guarantee that a client will never see older versions of a data item. This is often implemented by building additional caching into the client library, so that if a client moves to a replica node that contains old data, then the client library returns its cached value rather than the old value from the replica.
+{% endtab %}
+
+{% tab title="Causal consistency models" %}
+Strongest model available
+{% endtab %}
+
+{% tab title="Eventual consistency models" %}
+The consistency model is that all replicas will reach agreement of values at the eventual stage after undefined amount of time. It is implied that before that time results between replicas are inconsistent in some undefined manner.
+{% endtab %}
+{% endtabs %}
+
+## Time and order
 

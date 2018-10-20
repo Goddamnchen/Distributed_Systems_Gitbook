@@ -1,10 +1,11 @@
 # Table of contents
 
 * [README](README.md)
+* [Untitled](untitled.md)
 
 ## LECTURES
 
-* [Lec 1 - MapReduce](lectures/untitled.md)
+* [Lecture 1 - MapReduce](lectures/untitled.md)
 
 ## READING
 
