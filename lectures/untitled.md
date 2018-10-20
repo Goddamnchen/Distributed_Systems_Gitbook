@@ -1,6 +1,6 @@
 # Lecture 1 - MapReduce
 
-![Figure 1: MapReduce execution overview](../.gitbook/assets/image%20%284%29.png)
+![Figure 1: MapReduce execution overview](../.gitbook/assets/image.png)
 
 ## Review
 
