@@ -1,5 +1,7 @@
 # Lecture 3 - GFS
 
+{% embed url="https://pdos.csail.mit.edu/6.824/papers/gfs.pdf" %}
+
 ![Figure 1: GFS Architecture](../.gitbook/assets/image%20%2811%29.png)
 
 ![Figure 2: GFS Control Flow](../.gitbook/assets/image%20%282%29.png)
@@ -54,15 +56,19 @@
 
 ## Reference
 
-* [Lecture Note - GFS](https://pdos.csail.mit.edu/6.824/notes/l-gfs-short.txt)
-* [Paper - GFS\(2003\)](https://pdos.csail.mit.edu/6.824/papers/gfs.pdf)
-* [FAQ - GFS](https://pdos.csail.mit.edu/6.824/papers/gfs-faq.txt)
-* [Case Study ](https://queue.acm.org/detail.cfm?id=1594206)
+* Lecture Note
+  * [GFS](https://pdos.csail.mit.edu/6.824/notes/l-gfs-short.txt)
+* Paper
+  * [GFS\(2003\)](https://pdos.csail.mit.edu/6.824/papers/gfs.pdf)
+* FAQ
+  * [GFS](https://pdos.csail.mit.edu/6.824/papers/gfs-faq.txt)
+* Case Study 
   * \_\_[_GFS: Evolution on Fast-forward_](https://queue.acm.org/detail.cfm?id=1594206)\_\_
   * [GFS 2.0](http://highscalability.com/blog/2010/9/11/googles-colossus-makes-search-real-time-by-dumping-mapreduce.html)
-* [Blog - GFS Note\(Chinese\)](https://www.jianshu.com/p/e9a477ee27c1)
+* Blogs
+  * [GFS Note\(Chinese\)](https://www.jianshu.com/p/e9a477ee27c1)
   * [Introduction to Google File System\(Chinese\)](http://blog.bittiger.io/post174/)
-  *  [Video](https://www.youtube.com/watch?v=WLad7CCexo8)
+  * [Video](https://www.youtube.com/watch?v=WLad7CCexo8)
 
 
 

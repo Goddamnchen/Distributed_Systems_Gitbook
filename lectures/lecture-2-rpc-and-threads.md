@@ -85,10 +85,14 @@ How to handle duplicate requests while original is still executing?
 
 ## Reference
 
-* [Lecture note - RPC and Threads](https://pdos.csail.mit.edu/6.824/notes/l-rpc.txt)
-* [Concurrency example - Crawler](https://pdos.csail.mit.edu/6.824/notes/crawler.go)
-* [RPC example - K/V](https://pdos.csail.mit.edu/6.824/notes/kv.go)
-* [Golang Package - RPC](https://golang.org/pkg/net/rpc/)
+* Lecture note
+  * [RPC and Threads](https://pdos.csail.mit.edu/6.824/notes/l-rpc.txt)
+* Concurrency example
+  * [Crawler](https://pdos.csail.mit.edu/6.824/notes/crawler.go)
+* RPC example
+  * [K/V](https://pdos.csail.mit.edu/6.824/notes/kv.go)
+* Golang Package
+  * [RPC](https://golang.org/pkg/net/rpc/)
 
 
 

@@ -1,5 +1,7 @@
 # Lecture 1 - MapReduce
 
+{% embed url="https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf" %}
+
 ![Figure 1: MapReduce execution overview](../.gitbook/assets/image.png)
 
 ## Review
@@ -86,9 +88,12 @@ Can use MapReduce for all these purposes!
 
 ## Reference
 
-* [Lecture note - Introduction](https://pdos.csail.mit.edu/6.824/notes/l01.txt)
-* [Paper - MapReduce\(2004\)](https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf)
-* [Blog - MapReduce Intro\(Chinese\)](http://airekans.github.io/cloud-computing/2014/01/25/mapreduce-intro)
+* Lecture note
+  * [Introduction](https://pdos.csail.mit.edu/6.824/notes/l01.txt)
+* Paper
+  * [MapReduce\(2004\)](https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf)
+* Blog
+  * [MapReduce Intro\(Chinese\)](http://airekans.github.io/cloud-computing/2014/01/25/mapreduce-intro)
 
 
 
