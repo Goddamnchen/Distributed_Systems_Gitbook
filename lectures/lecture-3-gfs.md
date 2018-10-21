@@ -4,6 +4,7 @@
 
 ![Figure 2: GFS Control Flow](../.gitbook/assets/image%20%282%29.png)
 
+1. 
 ## Review
 
 **What does Master store?**  
