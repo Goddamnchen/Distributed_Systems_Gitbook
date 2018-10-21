@@ -86,9 +86,9 @@ Can use MapReduce for all these purposes!
 
 ## Reference
 
-* [x] [Lecture note - Introduction](https://pdos.csail.mit.edu/6.824/notes/l01.txt)
-* [x] [Paper - MapReduce\(2004\)](https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf)
-* [x] [Blog - MapReduce Intro\(Chinese\)](http://airekans.github.io/cloud-computing/2014/01/25/mapreduce-intro)
+* [Lecture note - Introduction](https://pdos.csail.mit.edu/6.824/notes/l01.txt)
+* [Paper - MapReduce\(2004\)](https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf)
+* [Blog - MapReduce Intro\(Chinese\)](http://airekans.github.io/cloud-computing/2014/01/25/mapreduce-intro)
 
 
 
