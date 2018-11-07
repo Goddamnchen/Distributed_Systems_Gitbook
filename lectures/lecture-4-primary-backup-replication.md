@@ -8,16 +8,28 @@
 
 **Logging channel:** Medium that transfer all inputs received by primary to keep sync between primary and backup. 
 
-**Shared Disk:**
+**Shared Disk:** The content in shared disk is naturally correct and available if failover happens. Only primary VM could write on it. The atomic test-and-set it supports, which is before a failover, could avoid split brain. 
+
+{% hint style="info" %}
+Shared disk would be a single point failure. The whole service will down if it fails.  
+Solution: Using GFS to ensure fault-tolerance for storage.
+{% endhint %}
 
 ### **Deterministic Replay** 
 
 Deterministic replay achieves synchronize between primary VM and backup VM through logging channel. It records inputs and all possible non-deterministic associated with the VM execution in a stream of log entires.
 
-* For non-deterministic operations
-* For non-deterministic events\(e.g. timer, I/O completion interrupts\)
+* For non-deterministic operations: sufficient information is logged to reproduce the operation, same state, and same output.
+* For non-deterministic events\(e.g. timer, I/O completion interrupts\): the exact instruction where event occurred is recorded. During replay, the event is delivered at the same point in instructions stream.
 
 ### FT Protocol
+
+Additional restrictions with logging entries on the logging channel to achieve fault-tolerance. The FT Protocol ensures that no data lost when primary fails by means of _**Output Requirement**_ which is enforced by _**Output Rule**_.
+
+> * _**Output Requirement:**_ if the backup VM ever takes over after a failure of the primary, the backup VM will continue executing in a way that is entirely consistent with all outputs that the primary VM has sent to the external world.
+> * _**Output Rule:**_ the primary VM may not send an output to the external world, until the backup VM has received and acknowledged the log entry associated with the operation producing the output.
+
+Because output operation that primary receive may rely on some non-deterministic events\(e.g. timer interrupt\), which may give rise to a non-deterministic output by backup, the key point is that backup should  receive all log entries including log entry for output-producing operation to achieve consistency of output. 
 
 ![Figure 2: FT Protocol](../.gitbook/assets/image%20%285%29.png)
 
