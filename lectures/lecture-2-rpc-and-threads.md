@@ -1,12 +1,12 @@
-# Lecture 2 - RPC and Threads
-
-![](../.gitbook/assets/image%20%2812%29.png)
-
-![](../.gitbook/assets/image%20%2815%29.png)
-
-
+# RPC and Threads
 
 ![](../.gitbook/assets/image%20%2813%29.png)
+
+![](../.gitbook/assets/image%20%2816%29.png)
+
+
+
+![](../.gitbook/assets/image%20%2814%29.png)
 
 * Stub constructs RPC request argument and records it for future response
 * RPC library: 

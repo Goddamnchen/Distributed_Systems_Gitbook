@@ -1,4 +1,4 @@
-# Lecture 1 - MapReduce
+# MapReduce
 
 {% embed url="https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf" %}
 
