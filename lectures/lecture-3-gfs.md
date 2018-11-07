@@ -2,9 +2,9 @@
 
 {% embed url="https://pdos.csail.mit.edu/6.824/papers/gfs.pdf" %}
 
-![Figure 1: GFS Architecture](../.gitbook/assets/image%20%2811%29.png)
+![Figure 1: GFS Architecture](../.gitbook/assets/image%20%2814%29.png)
 
-![Figure 2: GFS Control Flow](../.gitbook/assets/image%20%282%29.png)
+![Figure 2: GFS Control Flow](../.gitbook/assets/image%20%283%29.png)
 
 1. 
 ## Review
