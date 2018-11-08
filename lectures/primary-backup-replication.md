@@ -2,7 +2,7 @@
 
 ## Basic Design
 
-![Figure 1: Basic FT Configuration](../.gitbook/assets/image%20%282%29.png)
+![Figure 1: Basic FT Configuration](../.gitbook/assets/image%20%283%29.png)
 
 **Primary VM and Backup VM:** initialize with same state, receive same inputs in same order, same execution and generate same outputs.
 
@@ -31,7 +31,7 @@ Additional restrictions with logging entries on the logging channel to achieve f
 
 Because output operation that primary receive may rely on some non-deterministic events\(e.g. timer interrupt\), which may give rise to a non-deterministic output on backup, the key point is that backup should  receive all log entries including log entry for output-producing operation to achieve consistency of output. 
 
-![Figure 2: FT Protocol](../.gitbook/assets/image%20%285%29.png)
+![Figure 2: FT Protocol](../.gitbook/assets/image%20%286%29.png)
 
 What happen when the primary crashes just after getting ACK from backup, but before the primary emits the output?
 
@@ -125,7 +125,7 @@ Solution: **Modified** **VMotion**, which will clone a exact running copy of VM 
 
 ### Managing the Logging Channel
 
-![Figure 3: FT logging Buffers and Channel](../.gitbook/assets/image%20%2810%29.png)
+![Figure 3: FT logging Buffers and Channel](../.gitbook/assets/image%20%2811%29.png)
 
 The hypervisors of Primary and Backup VM both maintain a log buffer for log entries.   
 The primary will produce log entires to its log buffer when executing. And these log entries will immediately flush out to logging channel. The backup log buffer will read in log entires from channel as soon as possible. Each time backup log buffer reads in some log entires, it will reply a ACK to primary, which will allow the delayed output to be release to external world.
@@ -145,7 +145,7 @@ The VM FT uses the mechanism of limiting CPU resources to accommodate the speed 
 For operations like shutting down or resource management change of primary VM, it is necessary to send special control entries to backup VM, ensuring that backup VM will exert appropriate operation corresponding to primary VM. 
 
 * Most operations are initiated only on primary VM
-* VMotion is a special case, which can be done independently by primary and backup
+* VMotion is a special case, which can be done independently by ****both primary and backup
 
 VMotion need to deal with switchover connection appropriately
 
@@ -153,7 +153,122 @@ VMotion need to deal with switchover connection appropriately
 
 So VMotion could only deal with the operation of re-start and connection establishment when completing all I/Os. Although it's easy for primary VM to keep waiting for the completeness of outstanding I/Os, more complexity appears for backup VM owing to the reason that it must replay primary, in which case the primary may issuing I/Os constantly with certain workload. Therefore VM FT use an unique method to solve this:  **It requests that primary need temporarily complete all of its I/O at** _**the final switchover point.**_
 
-## Review
+### **Implementation issue for Disk/Network I/Os**
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left"><b>Disk I/O</b>
+      </th>
+      <th style="text-align:left">Network I/O</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">
+        <p></p>
+        <ol>
+          <li>Disk races
+            <ul>
+              <li>detect I/O races and force sequential access</li>
+            </ul>
+          </li>
+          <li>Memory races resulted by DMA
+            <ul>
+              <li>Using block-size bounce buffer because modify page protections on MMU
+                is expensive</li>
+              <li>R/W to buffer, and buffer will exert R/W to memory until receiving I/O
+                completion.</li>
+            </ul>
+          </li>
+          <li>Having unresolved I/O on primary when encountering failure and backup
+            takes over
+            <ul>
+              <li>Re-issue the pending I/Os during go-live process of backup VM</li>
+            </ul>
+          </li>
+        </ol>
+      </td>
+      <td style="text-align:left">
+        <p>Network optimization includes asynchronously update of network devices's
+          state by hypervisor</p>
+        <p><b>Issue</b>: Not updating the primary and backup at the same time will
+          result in non-determinism.</p>
+        <p>Solution:</p>
+        <ol>
+          <li>Disabling of the asynchronously network optimization and using hypervisor
+            trap which can log updates and apply them to VMs simultaneously</li>
+          <li>To improve performance:
+            <ul>
+              <li>one hypervisor transmit of trap include <b>a group of packets</b>, which
+                reduce number of traps and interrupts towards VM</li>
+            </ul>
+          </li>
+          <li>To reduce the delay of transmitted packets before receiving ACK from backup:
+            <ul>
+              <li>ensuring log and ACK transfer to be done without any context of thread
+                switch.
+                <br /><em>Detail in last paragraph of chapter 3.5 </em><a href="https://pdos.csail.mit.edu/6.824/papers/vm-ft.pdf"><em>Fault-Tolerant Virtual Machines (2010)</em></a><em></em>
+              </li>
+            </ul>
+          </li>
+        </ol>
+        <p></p>
+      </td>
+    </tr>
+  </tbody>
+</table>## **Design Alternatives**
+
+### **Shared vs Non-shared Disk**
+
+\*\*\*\*
+
+![Figure 4: FT Non-shared Disk Configuration](../.gitbook/assets/image%20%281%29.png)
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Alternatives</th>
+      <th style="text-align:left">Pros</th>
+      <th style="text-align:left">Cons</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">Shared Disk</td>
+      <td style="text-align:left">
+        <ul>
+          <li>Disk content naturally correct and available is failover occurs</li>
+          <li>Shared disk detect split-brain easily as a external tiebreaker</li>
+        </ul>
+      </td>
+      <td style="text-align:left">
+        <ul>
+          <li>Shared Disk considered as external, in which primary needs to wait backup</li>
+          <li>Expensive</li>
+          <li>Distance</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">Non-shared Disk</td>
+      <td style="text-align:left">
+        <ul>
+          <li>each's disk considered as internal, write operation of primary does not
+            need delay</li>
+          <li>long distance FT</li>
+        </ul>
+      </td>
+      <td style="text-align:left">
+        <ul>
+          <li>Additional sync manner between disks, especially when encountering switchover</li>
+          <li>FT VMotion must not only sync the running state, but also disk state</li>
+          <li>Additional external tiebreaker to deal with split-brain</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>## Review
 
 **Why would physical servers be more difficult to ensure deterministic than VMs?**  
 `VM is running on top of a hypervisor, which has full control over the execution of a VM, ensuring the hypervisor to capture all necessary information about non-deterministic operations on primary VM and to replay these operations correctly on the backup VM.(e.g. percise timing of interrupt delivery, random generator)`
