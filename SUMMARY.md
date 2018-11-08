@@ -4,11 +4,11 @@
 
 ## LECTURES
 
-* [MapReduce](lectures/untitled.md)
-* [RPC and Threads](lectures/lecture-2-rpc-and-threads.md)
-* [GFS](lectures/lecture-3-gfs.md)
-* [Primary-Backup Replication](lectures/lecture-4-primary-backup-replication.md)
-* [Zookeeper](lectures/lecture-7-zookeeper.md)
+* [MapReduce](lectures/mapreduce.md)
+* [RPC and Threads](lectures/rpc-and-threads.md)
+* [GFS](lectures/gfs.md)
+* [Primary-Backup Replication](lectures/primary-backup-replication.md)
+* [Zookeeper](lectures/zookeeper.md)
 
 ## READING
 

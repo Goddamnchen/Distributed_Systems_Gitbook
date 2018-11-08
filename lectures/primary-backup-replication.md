@@ -142,7 +142,16 @@ The VM FT uses the mechanism of limiting CPU resources to accommodate the speed 
 
 ### Operations on FT VMs
 
+For operations like shutting down or resource management change of primary VM, it is necessary to send special control entries to backup VM, ensuring that backup VM will exert appropriate operation corresponding to primary VM. 
 
+* Most operations are initiated only on primary VM
+* VMotion is a special case, which can be done independently by primary and backup
+
+VMotion need to deal with switchover connection appropriately
+
+> i.e. When trying to establish a new connection and switchover successfully, after which the survived one takes over and uses VMotion to re-start backup when primary/backup failed, the VMotion is required all outstanding\(unresolved\) to be completed at the final switchover point.
+
+So VMotion could only deal with the operation of re-start and connection establishment when completing all I/Os. Although it's easy for primary VM to keep waiting for the completeness of outstanding I/Os, more complexity appears for backup VM owing to the reason that it must replay primary, in which case the primary may issuing I/Os constantly with certain workload. Therefore VM FT use an unique method to solve this:  **It requests that primary need temporarily complete all of its I/O at** _**the final switchover point.**_
 
 ## Review
 
@@ -156,6 +165,9 @@ The VM FT uses the mechanism of limiting CPU resources to accommodate the speed 
 
 **What is** _**deterministic reply**_**?**  
 `Basic technology that allows us to record the execution of a primary and ensure the backup executes identically. It is added with extra protocals and functionality to bulid a complete fault-tolerant VM system.`
+
+**Why would VM FT ensures that neither VM is moved to the server where the other VM is?**  
+`Since the situation will no longer provide fault tolerance`
 
 ## Reference
 
